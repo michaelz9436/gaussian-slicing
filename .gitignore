@@ -1,0 +1,44 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyc
+
+# C extensions
+*.so
+*.pyd
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# IDE / Editor specific
+.vscode/
+
+# Project-specific outputs and logs
+output/
+tensorboard_3d/
+screenshots/
+
+# --- 对 data 文件夹的特殊处理 ---
+# 目标：追踪 data 文件夹和里面的 .ply, .png 文件，但忽略其他。
+
+# 1. 默认忽略 data 文件夹内的所有内容
+data/*
+
+# 2. 但是，不要忽略 data 文件夹本身
+!data/
+
+# 3. 允许追踪 data 文件夹下的子文件夹 (例如 data/images/)
+!data/*/
+
+# 4. 最后，明确豁免我们需要的 .ply 和 .png 文件
+#    `**` 表示递归匹配所有子目录
+!data/**/*.ply
+!data/**/*.png

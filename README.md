@@ -1,6 +1,6 @@
 # Gaussian Slicing for Volumetric Data
 
-This project is a significant modification of the original **[3D Gaussian Splatting for Real-Time Radiance Field Rendering]([https://repo-sam.inria.fr/fungraph/3d-gaussians/](https://github.com/graphdeco-inria/gaussian-splatting)** by Inria. The core rendering pipeline has been fundamentally adapted to reconstruct and render 3D volumetric data from a series of orthogonal 2D slices (e.g., from confocal microscopy or MRI scans), instead of standard perspective images.
+This project is a significant modification of the original **[3D Gaussian Splatting for Real-Time Radiance Field Rendering]([https://repo-sam.inria.fr/fungraph/3d-gaussians/](https://github.com/graphdeco-inria/gaussian-splatting))** by Inria. The core rendering pipeline has been fundamentally adapted to reconstruct and render 3D volumetric data from a series of orthogonal 2D slices (e.g., from confocal microscopy or MRI scans), instead of standard perspective images.
 
 ## Key Modifications
 

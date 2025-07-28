@@ -100,6 +100,5 @@ python convert_to_standard_format.py ./output/slice_test_run/point_cloud/iterati
 
 This work is built upon the incredible research and open-source code from the authors of 3D Gaussian Splatting.
 
-- **Project Page**: [https://repo-sam.inria.fr/fungraph/3d-gaussians/](https://repo-sam.inria.fr/fungraph/3d-gaussians/)
-- **Paper**: Kerbl, B., Kopanas, G., Leimkühler, T., & Drettakis, G. (2023). 3D Gaussian Splatting for Real-Time Radiance Field Rendering. *ACM Transactions on Graphics*.
+- **Project Page**: [https://github.com/graphdeco-inria/gaussian-splatting](https://github.com/graphdeco-inria/gaussian-splatting)
 - **Original Code**: `git clone https://github.com/graphdeco-inria/gaussian-splatting --recursive`

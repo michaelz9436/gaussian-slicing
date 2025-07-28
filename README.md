@@ -53,7 +53,7 @@ Place your data in a directory with the following structure:
 The images should be named sequentially corresponding to their Z-order. The `sparse.ply` file provides initial seed points for the Gaussians.
 
 ### 2. Training
-To train a new model, run the `train.py` script. The following command trains for 40,00 iterations and then automatically runs the rendering script to generate comparison images from the trained model.
+To train a new model, run the `train.py` script. The following command trains for 4,000 iterations and then automatically runs the rendering script to generate comparison images from the trained model.
 ```bash
 python train.py -s ./data/confocal/Experiment-8144_0 -m ./output/slice_test_run --iterations 4000 && python render_slices.py -m ./output/slice_test_run
 ```

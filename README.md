@@ -48,7 +48,7 @@ Place your data in a directory with the following structure:
 │   ├── 001.png
 │   ├── 002.png
 │   └── ...
-└── sparse.ply          # Initial sparse point cloud (can be very small)
+└── sparse.ply          # Initial sparse point cloud (get by spot detection or other)
 ```
 The images should be named sequentially corresponding to their Z-order. The `sparse.ply` file provides initial seed points for the Gaussians.   
 The PNG images are assumed to be evenly spaced along the z-axis, such that 001.png, 002.png, etc., correspond to z = 0, z = 1, and so on.   

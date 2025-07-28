@@ -52,7 +52,7 @@ Place your data in a directory with the following structure:
 ```
 The images should be named sequentially corresponding to their Z-order. The `sparse.ply` file provides initial seed points for the Gaussians.   
 The PNG images are assumed to be evenly spaced along the z-axis, such that 001.png, 002.png, etc., correspond to z = 0, z = 1, and so on.   
-If your data has a different spacing between slices, you can modify the readSliceData() function in scene/slice_loader.py, which includes a z_scale parameter to define the real-world distance between adjacent slices.   
+If your data has a different spacing between slices, you can modify the readSliceData() function in scene/slice_loader.py, which includes a z_scale parameter to define the real-world distance between adjacent slices (z_scale=1 by default).   
 For datasets where slices are **not** uniformly spaced along the z-axis, you will need to modify the data loading logic to correctly assign z-coordinates to each image.
 
 ### 2. Training

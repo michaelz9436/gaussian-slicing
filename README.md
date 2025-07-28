@@ -53,9 +53,9 @@ Place your data in a directory with the following structure:
 The images should be named sequentially corresponding to their Z-order. The `sparse.ply` file provides initial seed points for the Gaussians.
 
 ### 2. Training
-To train a new model, run the `train.py` script. The following command trains for 40,000 iterations and then automatically runs the rendering script to generate comparison images from the trained model.
+To train a new model, run the `train.py` script. The following command trains for 40,00 iterations and then automatically runs the rendering script to generate comparison images from the trained model.
 ```bash
-python train.py -s ./data/confocal/Experiment-8144_0 -m ./output/slice_test_run --iterations 40000 && python render_slices.py -m ./output/slice_test_run
+python train.py -s ./data/confocal/Experiment-8144_0 -m ./output/slice_test_run --iterations 4000 && python render_slices.py -m ./output/slice_test_run
 ```
 - `-s`: Path to the source data directory.
 - `-m`: Path to the output directory where the model will be saved.
@@ -67,7 +67,7 @@ Key training hyperparameters can be adjusted in the `arguments/__init__.py` file
 ### 4. Rendering Novel Slices
 The most powerful feature is rendering novel, unseen slices at arbitrary Z-coordinates.
 ```bash
-python render_slices.py -m ./output/slice_test_run --iteration 40000 --novel_z 21.5 22 22.5 23 23.5 24
+python render_slices.py -m ./output/slice_test_run --iteration 4000 --novel_z 21.5 22 22.5 23 23.5 24
 ```
 - `-m`: Path to the trained model's output directory.
 - `--iteration`: (Optional) Specify which iteration's checkpoint to use. Defaults to the latest.
@@ -76,7 +76,7 @@ python render_slices.py -m ./output/slice_test_run --iteration 40000 --novel_z 2
 ### 5. Pruning Trained Gaussians (Optional)
 After training, the model may contain many transparent or redundant Gaussians. This script can be used to filter them, reducing file size and potentially improving rendering performance.
 ```bash
-python prune_gaussians.py ./output/slice_test_run/point_cloud/iteration_40000/point_cloud.ply \
+python prune_gaussians.py ./output/slice_test_run/point_cloud/iteration_4000/point_cloud.ply \
 --opacity_thresh 0.02 \
 --feature_thresh 0.15 \
 --scale_thresh 0.008 \
@@ -94,7 +94,7 @@ python prune_gaussians.py ./output/slice_test_run/point_cloud/iteration_40000/po
 ### 6. Converting to Standard 3DGS Format (Optional)
 This script converts the simplified Gaussian model back into the standard 3DGS format by adding placeholder values for Spherical Harmonics. This increases file size but makes the model compatible with standard 3DGS viewers.
 ```bash
-python convert_to_standard_format.py ./output/slice_test_run/point_cloud/iteration_40000/point_cloud.ply
+python convert_to_standard_format.py ./output/slice_test_run/point_cloud/iteration_4000/point_cloud.ply
 ```
 
 ## Acknowledgements

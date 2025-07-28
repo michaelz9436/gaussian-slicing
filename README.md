@@ -23,7 +23,7 @@ The primary goal of this fork is to enable 3D Gaussian Splatting to work with sc
 ## Installation
 
 ### 1. Clone the Repository
-Clone this repository and its submodules recursively.
+Clone this repository (with no submodules).
 ```bash
 git clone https://github.com/michaelz9436/gaussian-slicing
 cd gaussian-slicing

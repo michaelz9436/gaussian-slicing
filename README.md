@@ -18,7 +18,7 @@ The primary goal of this fork is to enable 3D Gaussian Splatting to work with sc
   - The **forward pass** no longer uses perspective projection. It now implements an **orthogonal slicing** mechanism, projecting 3D Gaussians onto a virtual plane at a given Z-coordinate. An attenuation factor based on the Gaussian's distance to the slice plane is applied to its opacity.
   - The **backward pass** has been correspondingly modified to correctly propagate gradients for position (`xyz`), opacity, scale, rotation, and intensity based on the new slicing mathematics.
 
-> **Note**: Files ending in `* copy.*` are unmodified original source files from the 3DGS project, preserved for reference purposes only. They are not used in this project's pipeline.
+> **Note**: Files ending in `* copy.*` are unmodified original source files from the 3DGS project, preserved for reference purposes only. They are not used in this project's pipeline. To simplify the workflow, all submodules have been flattened and integrated into the main project structure, as some of them contain customized modifications.
 
 ## Installation
 
@@ -35,7 +35,8 @@ Create and activate the Conda environment using the provided file.
 conda env create --file environment.yml
 conda activate gaussian_splatting
 ```
-*The environment name remains `gaussian_splatting` for consistency with the original project.*
+*The environment name remains `gaussian_splatting` for consistency with the original project.*   
+*This environment is identical to that of the original Gaussian Splatting project, except for modifications in the diff-gaussian-rasterization submodule (see Key Modifications for details).*
 
 ## Usage Guide
 

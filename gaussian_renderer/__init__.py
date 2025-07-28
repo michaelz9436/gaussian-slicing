@@ -61,11 +61,10 @@ def render(slice_plane: SlicePlane, pc : GaussianModel, pipe, bg_color : torch.T
         debug=pipe.debug,
         antialiasing=pipe.antialiasing,
         
-        # --- 我们自定义的新增参数 ---
-        # 这些参数需要稍后在 C++ 层的 GaussianRasterizationSettings 结构体中定义
+        # --- 自定义的新增参数 ---
         is_slice_rendering=True,                 # 一个布尔标志，告诉CUDA核函数切换到切片模式
         z_position=float(slice_plane.z_position), # 切片的Z坐标
-        # 假设您的数据XY范围是0-512，如果不是，需要归一化或传递min/max
+        # 数据XY范围是0-512
         x_min=0.0,
         x_max=float(slice_plane.image_width),
         y_min=0.0,
@@ -89,13 +88,8 @@ def render(slice_plane: SlicePlane, pc : GaussianModel, pipe, bg_color : torch.T
         scales = pc.get_scaling
         rotations = pc.get_rotation
 
-    # =================================================================================
     # 核心修改：颜色/强度处理
-    # =================================================================================
-    # 我们不再使用球谐函数 (SH)。
-    # 我们的高斯模型 (`pc`) 的 `get_features` 方法现在返回一个 (N, 1) 的张量。
-    # 我们需要将其扩展到 (N, 3) 以适应光栅化器对RGB的期望，或者修改光栅化器以处理单通道。
-    # 为了简化，我们先将其复制到三个通道，形成灰度图。
+
     shs = None
     colors_precomp = None
     if override_color is None:
@@ -109,10 +103,8 @@ def render(slice_plane: SlicePlane, pc : GaussianModel, pipe, bg_color : torch.T
             colors_precomp = override_color.repeat(1, 3)
         else:
             colors_precomp = override_color
-    # =================================================================================
 
     # --- 调用光栅化器 (Rasterizer) ---
-    # 我们不再需要 separate_sh 的分支，因为我们总是不使用SH
     rendered_image, radii, depth_image = rasterizer(
         means3D = means3D,
         means2D = means2D,
@@ -124,23 +116,16 @@ def render(slice_plane: SlicePlane, pc : GaussianModel, pipe, bg_color : torch.T
         cov3D_precomp = cov3D_precomp)
         
     # --- 移除曝光调整 ---
-    # use_trained_exp 逻辑依赖于 viewpoint_camera.image_name，我们不再有这个。
-    # 曝光调整对于科学数据可能也不适用。
-
-    # Those Gaussians that were frustum culled or had a radius of 0 were not visible.
-    # They will be excluded from value updates used in the splitting criteria.
     rendered_image = rendered_image.clamp(0, 1)
     
-    # 因为我们的输入颜色是灰度的 (R=G=B)，所以输出的渲染图像也是灰度的。
-    # 我们可以只取第一个通道用于计算损失。
-    grayscale_image = rendered_image[0:1, :, :] # 取出R通道作为我们的单通道灰度图
+    grayscale_image = rendered_image[0:1, :, :] 
 
     out = {
         "render": grayscale_image, # 返回单通道灰度图
         "viewspace_points": screenspace_points,
         "visibility_filter" : (radii > 0).nonzero(),
         "radii": radii,
-        "depth" : depth_image # 这里的深度图可能代表了对渲染贡献最大的高斯的Z值
+        "depth" : depth_image
         }
     
     return out

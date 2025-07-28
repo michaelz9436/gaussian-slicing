@@ -17,7 +17,7 @@ from utils.general_utils import PILtoTorch
 import cv2
 from PIL import Image
 
-# 这是一个新的辅助函数，专门用于处理您的灰度图
+# 这是一个新的辅助函数，专门用于处理灰度图
 # 它会加载图像，如果需要的话调整尺寸，并转换为 [0,1] 范围的单通道PyTorch张量
 def PILtoGrayscaleTorch(pil_image, resolution):
     # 调整图像尺寸
@@ -51,7 +51,7 @@ class SlicePlane(nn.Module):
 
         self.uid = uid
         self.image_name = image_name
-        self.z_position = z_position # 这是最重要的参数：切片在Z轴上的物理位置
+        self.z_position = z_position # 切片在Z轴上的物理位置
         
         try:
             self.data_device = torch.device(data_device)
@@ -60,7 +60,6 @@ class SlicePlane(nn.Module):
             self.data_device = torch.device("cuda:0")
 
         # 使用新的辅助函数加载您的灰度图
-        # original_image 将是一个 [1, H, W] 的张量，代表单通道灰度图
         self.original_image = PILtoGrayscaleTorch(image, resolution).to(self.data_device)
 
         self.image_height, self.image_width = self.original_image.shape[1], self.original_image.shape[2]

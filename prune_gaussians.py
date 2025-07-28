@@ -111,7 +111,7 @@ def apply_pruning_rules(properties, args):
     if args.scale_thresh is not None:
         if 'scale_0' in properties and 'scale_1' in properties and 'scale_2' in properties:
             scales = torch.stack([properties['scale_0'], properties['scale_1'], properties['scale_2']], dim=1)
-            # 我们检查最大尺度，如果连最大的尺度都很小，就裁剪掉
+            # 检查最大尺度，如果连最大的尺度都很小，就裁剪掉
             max_scale, _ = torch.max(torch.exp(scales), dim=1) # scale存储的是log值，需要exp转换
             scale_mask = (max_scale.squeeze() >= args.scale_thresh)
             num_removed = (~scale_mask).sum().item()
@@ -129,8 +129,6 @@ def apply_pruning_rules(properties, args):
         keep_mask &= xyz_mask
         print(f"规则[XYZ]: 裁剪掉 {num_removed} 个点 (任一坐标轴 |val| > {args.xyz_thresh})")
         
-    # 可以在这里添加更多自定义规则...
-    # 例如：裁剪掉特别扁平或拉长的高斯球
     if args.aspect_ratio_thresh is not None:
         scales = torch.exp(torch.stack([properties['scale_0'], properties['scale_1'], properties['scale_2']], dim=1))
         max_s, _ = torch.max(scales, dim=1)

@@ -7,7 +7,6 @@ from typing import List
 # 导入 plyfile 库来直接处理 .ply 文件
 from plyfile import PlyData
 
-# 导入我们需要的类和函数
 from .cameras import SlicePlane
 # 从 .dataset_readers 导入 SceneInfo 和 BasicPointCloud
 from .dataset_readers import SceneInfo, BasicPointCloud
@@ -15,7 +14,7 @@ from .dataset_readers import SceneInfo, BasicPointCloud
 
 class SliceLoader:
     """
-    这个类负责加载您的切片数据。
+    这个类负责加载切片数据。
     它会查找一个包含切片图像的文件夹，并按顺序加载它们。
     它还会加载一个初始点云，即使点云没有颜色信息。
     """
@@ -42,7 +41,7 @@ class SliceLoader:
         print(f"Loading slice data from: {self.source_path}")
         print(f"Z-axis scale factor: {self.z_scale}")
 
-        # 1. 加载稀疏点云 (健壮版本)
+        # 1. 加载稀疏点云
         if not os.path.exists(self.point_cloud_path):
             raise FileNotFoundError(f"Point cloud file not found at: {self.point_cloud_path}")
         

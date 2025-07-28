@@ -16,20 +16,15 @@ def convert_ply_to_txt(ply_path, txt_path):
         # 使用 plyfile 库读取 .ply 文件
         plydata = PlyData.read(ply_path)
         vertex_element = plydata['vertex']
-        
-        # ======================================================================
-        #  错误修复: 正确获取属性名称的方法
-        # ======================================================================
         property_names = [prop.name for prop in vertex_element.properties]
         print(f"文件包含的属性: {property_names}")
-        # ======================================================================
 
         num_gaussians = len(vertex_element.data)
         print(f"文件中包含 {num_gaussians} 个高斯球。")
 
         # 准备写入文件
         with open(txt_path, 'w') as f:
-            # 写入文件头，描述每一列是什么
+            # 写入文件头，描述每一列
             header = "Index\t"
             header += "X\tY\tZ\t"
             header += "Intensity\t"  
@@ -47,7 +42,7 @@ def convert_ply_to_txt(ply_path, txt_path):
                 # 位置
                 x, y, z = data['x'], data['y'], data['z']
                 
-                # 强度 (我们的模型中 f_dc_0 代表强度)
+                # 强度
                 # 检查属性是否存在
                 intensity = data['f_0'] if 'f_0' in property_names else 0.0
                 

@@ -9,12 +9,10 @@ from PIL import Image
 import numpy as np
 from tqdm import tqdm
 
-# 确保项目路径在 sys.path 中
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-# 导入我们修改过的类
 from scene import Scene, GaussianModel
 from scene.cameras import SlicePlane 
 from gaussian_renderer import render
@@ -25,10 +23,10 @@ def render_trained_slices(scene, gaussians, pipe, model_path, iteration):
     """
     (旧功能) 渲染所有在训练/测试集中存在的切片，并生成对比图。
     """
-    bg_color = [0] # 假设背景为黑色
+    bg_color = [0] # 背景为黑色
     background = torch.tensor(bg_color, dtype=torch.float32, device="cuda")
     
-    # 创建输出目录
+
     render_output_dir = os.path.join(model_path, "renders", f"iter_{iteration}")
     gt_output_dir = os.path.join(model_path, "gt")
     comparison_output_dir = os.path.join(model_path, "comparison", f"iter_{iteration}")
@@ -60,7 +58,7 @@ def render_trained_slices(scene, gaussians, pipe, model_path, iteration):
 
 def render_novel_slices(scene, gaussians, pipe, model_path, iteration, z_values):
     """
-    (新功能) 渲染指定Z坐标的新切片。
+    渲染指定Z坐标的新切片。
     """
     bg_color = [0]
     background = torch.tensor(bg_color, dtype=torch.float32, device="cuda")
@@ -71,7 +69,6 @@ def render_novel_slices(scene, gaussians, pipe, model_path, iteration, z_values)
     
     print(f"Rendering NOVEL slices at z={z_values}... Output will be saved to {novel_output_dir}")
 
-    # 我们需要一个模板来确定新切片的图像尺寸
     # 从训练集中取第一个切片作为模板
     template_slice = scene.getTrainCameras()[0]
     width, height = template_slice.image_width, template_slice.image_height
@@ -84,7 +81,7 @@ def render_novel_slices(scene, gaussians, pipe, model_path, iteration, z_values)
         for z in tqdm(z_values, desc="Rendering novel slices"):
             # 为新的Z坐标创建一个临时的SlicePlane对象
             novel_slice_plane = SlicePlane(
-                uid=-1, # uid不重要
+                uid=-1, 
                 z_position=z,
                 image=placeholder_image,
                 resolution=resolution
@@ -93,14 +90,11 @@ def render_novel_slices(scene, gaussians, pipe, model_path, iteration, z_values)
             # 渲染新切片
             rendered_image = render(novel_slice_plane, gaussians, pipe, background)["render"]
 
-            # 创建文件名，格式化z值以避免小数点问题
-            # 先处理z值，将浮点数的小数点替换为下划线
             z_str = f"{z:.3f}".replace('.', '_') 
-            # 然后再安全地拼接成完整的文件名
             filename = f"novel_z_{z_str}.png"
             save_path = os.path.join(novel_output_dir, filename)
 
-            # 保存渲染图
+            # 保存
             save_image(rendered_image, save_path)
     
     print(f"\nNovel slice images are in: {novel_output_dir}")
@@ -162,8 +156,6 @@ if __name__ == "__main__":
                         help="渲染指定Z坐标的新切片，而不是渲染测试集。可以提供多个值，例如：--novel_z 0.5 1.5 2.5")
 
     args = parser.parse_args()
-
-    # 安全状态初始化
     safe_state(args.quiet)
 
     # 调用主函数
